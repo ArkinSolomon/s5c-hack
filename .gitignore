@@ -1,0 +1,7 @@
+*.pcapng
+__pycache__
+__pycache__/*
+Phone\ Id.txt
+*.mp4
+*.h264
+*.DS_STORE
