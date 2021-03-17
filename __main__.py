@@ -11,7 +11,7 @@ UDP_PORT = 9125
 tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 tcp_socket.connect((HOST, TCP_PORT))
 
-packets = [
+link_codes = [
     '49546400000052000000bbb2993925b2a4c3dc01d8b1b5115b9892db3e6afc10502d79800ca1a5e5bad4aa2d951581b4ab822f3fdbd00738a62f8a3144a7322c11dc245de017f9144ccca7967a1bb6dc2da95ed3faefba06f003a50b3260d3c0f800dbd5b77b51de8913',
     '49546400000052000000f9231618e2daf8ef24b98cf55e7a10f092db3e6afc10502d79800ca1a5e5bad4aa2d951581b4ab822f3fdbd00738a62f8a3144a7322c11dc245de017f9144ccca7967a1bb6dc2da95ed3faefba06f003a50b3260d3c0f800dbd5b77b51de8913',
     '4954640000005200000005a54f1856b34db5a441b68ab79ceda092db3e6afc10502d79800ca1a5e5bad4aa2d951581b4ab822f3fdbd00738a62f8a3144a7322c11dc245de017f9144ccca7967a1bb6dc2da95ed3faefba06f003a50b3260d3c0f800dbd5b77b51de8913',
@@ -23,8 +23,8 @@ packets = [
 ]
 
 # Connct to drone
-for packet in packets:
-    tcp_socket.send(codecs.decode(packet, 'hex'))
+for code in link_codes:
+    tcp_socket.send(codecs.decode(code, 'hex'))
 print('Completed handshake');
 
 # Start recieving video
