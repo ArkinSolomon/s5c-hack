@@ -7,8 +7,10 @@ import asyncio
 HOST = '172.17.10.1'
 TCP_PORT = 8888
 UDP_PORT = 9125
+STREAM_IN_PORT = 9001;
 
 tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+print('Attempting connect to drone TCP socket')
 tcp_socket.connect((HOST, TCP_PORT))
 
 link_codes = [
@@ -27,14 +29,19 @@ for code in link_codes:
     tcp_socket.send(codecs.decode(code, 'hex'))
 print('Completed handshake');
 
+# Connect to server
+stream_out_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+stream_out_socket.connect(('127.0.0.1', STREAM_IN_PORT))
+
 # Start recieving video
-BUFFER_SIZE = 1460
+BUFFER_SIZE = 2048
 f = open('drone_stream.h264', 'wb')
 def start_writing_vid():
     print('Writing to video file')
     while 1:
         try:
             data = tcp_socket.recv(BUFFER_SIZE)
+            stream_out_socket.send(data)
             f.write(data)
         except KeyboardInterrupt:
             tcp_socket.close()

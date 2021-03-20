@@ -5,3 +5,4 @@ Phone\ Id.txt
 *.mp4
 *.h264
 *.DS_STORE
+node_modules/*
