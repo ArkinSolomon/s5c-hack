@@ -1,6 +1,18 @@
+const toUint8Array = function(parStr){
+  var raw = window.atob(parStr);
+  var rawLength = raw.length;
+  var array = new Uint8Array(new ArrayBuffer(rawLength));
+
+  var i;
+  for(i = 0; i < rawLength; i++) {
+    array[i] = raw.charCodeAt(i);
+  }
+  return array;    
+};
+
 //Wait for page to load
 $(document).ready(() => {
-  var socket = new WebSocket('ws://localhost:9000/stream');
+  const socket = io();
   socket.binaryType = 'arraybuffer';
 
   //Create player
@@ -17,8 +29,8 @@ $(document).ready(() => {
   document.getElementById('drone-stream').appendChild(p.canvas);
 
   //Render video
-  socket.onmessage = event => {
-    console.log(event.data);
-    p.decode(event.data);
-  };
+  socket.on('video', data => {
+    var bin = toUint8Array(data);
+    p.decode(bin);
+  });
 });

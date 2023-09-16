@@ -3,6 +3,7 @@ import codecs
 import threading
 import time
 import asyncio
+from commands import *
 
 HOST = '172.17.10.1'
 TCP_PORT = 8888
@@ -50,14 +51,14 @@ def start_writing_vid():
     f.close()
 threading.Thread(target=start_writing_vid).start()
 
-command = '6680808080000099'
-idle_command = command
+command = IDLE_COMMAND
 
 # Connect to UDP
 udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 udp_socket.connect((HOST, UDP_PORT))
 
 print('Completed udp connection')
+time.sleep(3)
 
 # Continuously send command
 def command_sender():
@@ -67,11 +68,9 @@ def command_sender():
         udp_socket.send(codecs.decode(command, 'hex'))
         time.sleep(.05)
 threading.Thread(target=command_sender).start()
+
+# The commands to send
 time.sleep(3)
-command = '6680808080010199'
-time.sleep(3)
-command = '668080508000d099'
-time.sleep(.1)
-command = '668080288000a899'
-time.sleep(3)
-command = idle_command
+command = TAKEOFF_COMMAND
+time.sleep(3);
+command = IDLE_COMMAND
